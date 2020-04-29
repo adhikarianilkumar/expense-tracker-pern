@@ -1,4 +1,3 @@
-//const Transaction = require('../models/TransactionModel');
 const pool = require("../config/db");
 
 // @desc    Get all transactions
@@ -6,7 +5,7 @@ const pool = require("../config/db");
 // @access  Public
 exports.getTransactions = async (req, res, next) => {
     try {
-        const transactions = await pool.query("SELECT * FROM expense_details");
+        const transactions = await pool.query("SELECT id, text, amount FROM expense_details");
 
         return res.status(200).json({
             success: true,
@@ -14,9 +13,11 @@ exports.getTransactions = async (req, res, next) => {
             data: transactions.rows
         });
     } catch (err) {
+        pool.end();
         res.status(500).json({
             success: false,
-            error: 'Server Error'
+            error: 'Server Error',
+            poolEnded: pool.ended
         });
     }
 }
@@ -27,7 +28,6 @@ exports.getTransactions = async (req, res, next) => {
 exports.addTransactions = async (req, res, next) => {
     try {
         const { text, amount } = req.body;
-        console.log('addTransactions')
 
         const transaction = await pool.query(
             "INSERT INTO expense_details (text, amount) VALUES ($1, $2) RETURNING *",
@@ -39,17 +39,21 @@ exports.addTransactions = async (req, res, next) => {
             data: transaction.rows[0]
         });
     } catch (err) {
+        pool.end();
         if(err.name==='ValidationError'){
             const messages = Object.values(err.errors).map(val=> val.message);
 
             return res.status(400).json({
                 success: false,
-                error: messages
+                error: messages,
+                poolEnded: pool.ended
             });
         } else {
+            pool.end();
             res.status(500).json({
                 success: false,
-                error: 'Server Error'
+                error: 'Server Error',
+                poolEnded: pool.ended
             });
         }
     }
@@ -61,8 +65,6 @@ exports.addTransactions = async (req, res, next) => {
 exports.deleteTransactions = async (req, res, next) => {
 
     try {
-        //const transaction = await Transaction.findById(req.params.id);
-        console.log(req.params.id)
         const transaction = await pool.query("DELETE FROM expense_details WHERE id = $1", [
             req.params.id
           ]);
@@ -74,16 +76,16 @@ exports.deleteTransactions = async (req, res, next) => {
             });
         }
 
-        //await transaction.remove();
-
         return res.status(200).json({
             success: true,
             data: {}
         });
     } catch (err) {
+        pool.end();
         res.status(500).json({
             success: false,
-            error: 'Server Error'
+            error: 'Server Error',
+            poolEnded: pool.ended
         });
     }
 

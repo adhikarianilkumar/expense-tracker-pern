@@ -4,10 +4,10 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const cors = require('cors');
-const connectDB = require('./config/db');
 
 dotenv.config({ path: './config/config.env'});
 
+// Port
 const PORT = process.env.PORT || 5000;
 
 const app = express();
