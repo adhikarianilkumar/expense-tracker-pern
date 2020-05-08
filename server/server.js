@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config({ path: './config/config.env'});
 
@@ -19,6 +22,8 @@ const transactions = require('./routes/transactionsRoute');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+app.use(compression()); // Compression middleware
+app.use(helmet()); // Secure HTTP headers in an Express app
 
 // Morgan
 if(process.env.NODE_ENV === 'development'){

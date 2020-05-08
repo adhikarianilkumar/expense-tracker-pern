@@ -2,6 +2,9 @@ const { Pool } = require("pg");
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env'});
 
+// Check for Env
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Programmatic Connection
 const programmaticConnection = {
   host: process.env.DB_HOST,
@@ -23,7 +26,7 @@ const programmaticConnection = {
 
 // Connection URI
 const connectionUri = {
-  connectionString: process.env.NODE_ENV === 'development' ? process.env.DEVELOPMENT_DB_CONNECTION_URI : process.env.PRODUCTION_DB_CONNECTION_URI
+  connectionString: isProduction ? process.env.PRODUCTION_DB_CONNECTION_URI : process.env.DEVELOPMENT_DB_CONNECTION_URI
 };
 // Using Connection URI
 console.log(`Database Connecting \nConnection URI ${connectionUri.connectionString}`.cyan.underline.bold);
