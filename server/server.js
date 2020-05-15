@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 5000;
 
 // Check for Env
 const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
+// Initialize Express app
 const app = express();
 
 // Import Routes
@@ -40,7 +42,7 @@ const limiter = rateLimit({
 app.use(limiter); // Apply to every endpoint but can be customizable to specific route
 
 // Morgan
-if(process.env.NODE_ENV === 'development'){
+if(isDevelopment){
     app.use(morgan('dev'));
 }
 
@@ -48,7 +50,7 @@ if(process.env.NODE_ENV === 'development'){
 app.use('/api/v1/transactions', transactions);
 
 // Production
-if(process.env.NODE_ENV === 'production'){
+if(isProduction){
     app.use(express.static('./../client/build'));
 
     app.get('*', (req, res) => {
