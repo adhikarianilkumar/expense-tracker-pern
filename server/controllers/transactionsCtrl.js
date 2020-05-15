@@ -49,7 +49,6 @@ exports.addTransactions = async (req, res, next) => {
                 poolEnded: pool.ended
             });
         } else {
-            pool.end();
             res.status(500).json({
                 success: false,
                 error: 'Server Error',

@@ -22,6 +22,7 @@ const app = express();
 
 // Import Routes
 const transactions = require('./routes/transactionsRoute');
+const user = require('./routes/userRoute');
 
 // Middleware
 app.use(express.json());
@@ -48,6 +49,7 @@ if(isDevelopment){
 
 // Route Middleware
 app.use('/api/v1/transactions', transactions);
+app.use('/api/v1', user);
 
 // Production
 if(isProduction){
