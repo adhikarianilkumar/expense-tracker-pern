@@ -1,1 +1,1 @@
-# expense-tracker-pern
+# expense-tracker-mern
