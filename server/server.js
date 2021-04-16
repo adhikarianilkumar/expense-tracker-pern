@@ -54,14 +54,14 @@ app.use('/api/v1', user);
 // Production
 if(isProduction){
     app.use(express.static('./../client/build'));
+    console.log(`Application is running in ${process.env.NODE_ENV} mode`.yellow.bold);
 
     app.get('*', (req, res) => {
-        //res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html'));
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '../', 'client', 'build', 'index.html'));
     });
 }
 
 app.listen(PORT, (err)=>{
     if(err) throw err;
-    console.log(`Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold);
+    console.log(`Server is running on port ${PORT}`.yellow.bold);
 });

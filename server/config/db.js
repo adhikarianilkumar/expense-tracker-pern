@@ -26,7 +26,8 @@ const programmaticConnection = {
 
 // Connection URI
 const connectionUri = {
-  connectionString: isProduction ? process.env.PRODUCTION_DB_CONNECTION_URI : process.env.DEVELOPMENT_DB_CONNECTION_URI
+  // Replace "process.env.DEVELOPMENT_DB_CONNECTION_URI" with prod connection URI for PROD
+  connectionString: isProduction ? process.env.DEVELOPMENT_DB_CONNECTION_URI : process.env.DEVELOPMENT_DB_CONNECTION_URI
 };
 // Using Connection URI
 console.log(`Database Connecting \nConnection URI ${connectionUri.connectionString}`.cyan.underline.bold);
